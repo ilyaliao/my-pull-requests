@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@iconify-json/lucide": "^1.2.68",
+    "@iconify-json/material-icon-theme": "^1.2.24",
     "@iconify-json/simple-icons": "^1.2.52",
     "@nuxt/ui": "^4.0.0-alpha.1",
     "@vercel/analytics": "^1.5.0",
