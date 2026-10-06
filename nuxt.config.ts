@@ -2,15 +2,7 @@
 export default defineNuxtConfig({
 
   // https://nuxt.com/modules
-  modules: ['@nuxt/eslint', '@nuxt/ui', '@vueuse/nuxt'],
-
-  $production: {
-    routeRules: {
-      '/': { isr: 60 * 5 },
-      '/api/contributions': { isr: 60 * 5 },
-      '/feed.xml': { isr: 60 * 5 },
-    },
-  },
+  modules: ['@nuxthub/core', '@nuxt/eslint', '@nuxt/ui', '@vueuse/nuxt'],
 
   // https://devtools.nuxt.com
   devtools: { enabled: true },
@@ -18,6 +10,10 @@ export default defineNuxtConfig({
 
   // https://nuxt.com/docs/getting-started/upgrade#testing-nuxt-4
   compatibilityDate: '2025-01-01',
+
+  hub: {
+    cache: true,
+  },
 
   // https://eslint.nuxt.com
   eslint: {

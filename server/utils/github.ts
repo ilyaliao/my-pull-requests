@@ -1,3 +1,4 @@
+import type { H3Event } from 'h3'
 import { Octokit } from 'octokit'
 
 let _octokit: Octokit
@@ -11,14 +12,8 @@ export function useOctokit() {
   return _octokit
 }
 
-// In memory cache as this is called internally in /api/contributions
-const RepoCache = new Map()
-
 // Read more about caching functions https://hub.nuxt.com/docs/features/cache#server-functions-caching
-export async function fetchRepo(owner: string, name: string) {
-  if (RepoCache.has(`${owner}/${name}`)) {
-    return RepoCache.get(`${owner}/${name}`)
-  }
+export const fetchRepo = defineCachedFunction(async (event: H3Event, owner: string, name: string) => {
   // Fetch repository details to get owner type
   // Can 404 if the repo is deleted, renamed, or not visible to the token
   const data = await useOctokit().request('GET /repos/{owner}/{name}', {
@@ -26,6 +21,11 @@ export async function fetchRepo(owner: string, name: string) {
     name,
   }).then(res => res.data).catch(() => null)
 
-  RepoCache.set(`${owner}/${name}`, data)
   return data
-}
+}, {
+  maxAge: 600,
+  swr: true,
+  group: 'functions',
+  name: 'getRepoDetails',
+  getKey: (_event: H3Event, owner: string, repo: string) => `${owner}/${repo}`,
+})

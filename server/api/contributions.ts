@@ -1,4 +1,4 @@
-export default defineEventHandler(async () => {
+export default defineCachedEventHandler(async (event) => {
   const octokit = useOctokit()
   // Fetch user from token
   const userResponse = await octokit.request('GET /user')
@@ -35,7 +35,7 @@ export default defineEventHandler(async () => {
   // For each PR, fetch the repository details
   for (const pr of data.items) {
     const [owner, name] = pr.repository_url.split('/').slice(-2)
-    const repo = await fetchRepo(owner!, name!)
+    const repo = await fetchRepo(event, owner!, name!)
     // Skip PRs whose repo is inaccessible (deleted, renamed, or hidden from the token)
     if (!repo) continue
 
@@ -55,4 +55,10 @@ export default defineEventHandler(async () => {
     user,
     prs,
   } as Contributions
+}, {
+  group: 'api',
+  name: 'contributions',
+  getKey: () => 'all',
+  swr: true,
+  maxAge: 300,
 })
