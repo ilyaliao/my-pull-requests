@@ -12,14 +12,14 @@ useHead({
     <div class="flex flex-wrap justify-center items-center gap-2 p-4">
       <span class="text-sm text-gray-600 dark:text-gray-400">Deployed at</span>
       <UButton
-        to="https://zeabur.com"
+        to="https://workers.cloudflare.com"
         target="_blank"
         variant="ghost"
         size="xs"
         color="violet"
-        icon="i-material-icon-theme:zeabur-light"
+        icon="i-simple-icons-cloudflare"
       >
-        Zeabur
+        Cloudflare
       </UButton>
     </div>
     <ScrollToTop />
